@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Luméa Vela | Premium Fashion</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#ffffff;
+--text:#111111;
+--accent:#C6A75E;
+--card:#f5f5f5;
+--green:#0F3D2E;
+--black:#000000;
+}
+
+body.dark{
+--bg:#0f0f0f;
+--text:#ffffff;
+--card:#1a1a1a;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+transition:0.3s;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 10%;
+position:fixed;
+width:100%;
+background:var(--bg);
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+z-index:1000;
+}
+
+.logo{
+font-size:22px;
+font-weight:700;
+letter-spacing:2px;
+color:var(--accent);
+}
+
+nav a{
+margin-left:25px;
+text-decoration:none;
+color:var(--text);
+font-weight:500;
+}
+
+.toggle-btn{
+margin-left:25px;
+cursor:pointer;
+font-size:18px;
+}
+
+section{
+padding:120px 10%;
+min-height:100vh;
+}
+
+.hero{
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+flex-direction:column;
+}
+
+.hero h1{
+font-family:'Playfair Display',serif;
+font-size:48px;
+margin-bottom:20px;
+color:var(--accent);
+}
+
+.hero p{
+font-size:18px;
+opacity:0.8;
+margin-bottom:30px;
+color:var(--green);
+}
+
+.btn{
+padding:12px 28px;
+background:var(--accent);
+color:var(--black);
+border:none;
+cursor:pointer;
+font-weight:600;
+letter-spacing:1px;
+}
+
+.about,.products{
+text-align:center;
+}
+
+.products-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:50px;
+}
+
+.card{
+background:var(--card);
+padding:30px;
+border-radius:12px;
+transition:0.4s;
+text-align:center;
+border:2px solid var(--accent);
+}
+
+.card.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 20px rgba(198,167,94,0.4);
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+/* CART PANEL */
+
+#cartPanel{
+position:fixed;
+top:0;
+right:0;
+width:360px;
+height:100vh;
+background:var(--black);
+border-left:2px solid var(--accent);
+padding:25px;
+overflow-y:auto;
+transition:0.5s;
+transform:translateX(100%);
+color:var(--accent);
+z-index:2000;
+}
+
+#cartPanel.open{
+transform:translateX(0);
+}
+
+#cartPanel button{
+background:var(--accent);
+color:var(--black);
+border:none;
+padding:10px;
+margin-top:10px;
+cursor:pointer;
+font-weight:600;
+width:100%;
+}
+
+/* ADMIN */
+
+#adminPanel{
+display:none;
+padding:20px;
+margin-top:20px;
+border:2px solid var(--accent);
+border-radius:12px;
+color:var(--accent);
+}
+
+/* INPUTS */
+
+input{
+width:80%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid var(--accent);
+text-align:center;
+background:var(--black);
+color:var(--accent);
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:20px;
+background:var(--card);
+margin-top:50px;
+}
+
+@media(max-width:768px){
+.hero h1{font-size:32px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">Luméa Vela</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#products">Collection</a>
+<span class="toggle-btn" onclick="toggleDark()">🌙</span>
+</nav>
+
+</header>
+
+<section class="hero" id="home">
+
+<h1>Elegance in Every Thread</h1>
+
+<p>Discover timeless fashion crafted for confidence and sophistication.</p>
+
+<button class="btn" onclick="openCart()">Shop Now</button>
+
+</section>
+
+<section class="about" id="about">
+
+<h2>About Luméa Vela</h2>
+
+<p style="margin-top:20px;max-width:600px;margin-left:auto;margin-right:auto;">
+Luméa Vela represents luxury, confidence, and modern elegance.
+Our designs are inspired by bold individuals who value quality, style and authenticity.
+</p>
+
+</section>
+
+<section class="products" id="products">
+
+<h2>Our Collection</h2>
+
+<div class="products-container" id="productsContainer"></div>
+
+</section>
+
+<section>
+
+<h2>Admin Login</h2>
+
+<input type="email" id="adminEmail" placeholder="Email"><br>
+
+<input type="password" id="adminPass" placeholder="Password"><br>
+
+<button class="btn" onclick="adminLogin()">Login</button>
+
+<p id="loginStatus"></p>
+
+<div id="adminPanel">
+
+<h3>Admin Dashboard</h3>
+
+<p>Total Orders: <span id="totalOrders">0</span></p>
+
+<p>Total Revenue: $<span id="totalRevenue">0</span></p>
+
+</div>
+
+</section>
+
+<section id="cartPanel">
+
+<h2>Cart</h2>
+
+<ul id="cartItems"></ul>
+
+<p>Total: $<span id="totalPrice">0</span></p>
+
+<p>Currency: <span id="currency">USD</span></p>
+
+<button onclick="checkout()">Checkout</button>
+
+<button onclick="downloadInvoice()">Download PDF Invoice</button>
+
+<button onclick="toggleCart()">Close Cart</button>
+
+</section>
+
+<footer>
+
+© 2026 Luméa Vela. All Rights Reserved.
+
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+/* DARK MODE */
+
+function toggleDark(){
+document.body.classList.toggle("dark")
+localStorage.setItem("darkMode",document.body.classList.contains("dark"))
+}
+
+if(localStorage.getItem("darkMode")==="true"){
+document.body.classList.add("dark")
+}
+
+/* PRODUCTS */
+
+const products=[
+{id:1,name:"Signature Hoodie",priceUSD:250,img:"https://images.unsplash.com/photo-1520975916090-3105956dac38"},
+{id:2,name:"Luxury Street Jacket",priceUSD:180,img:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d"},
+{id:3,name:"Classic Urban Set",priceUSD:300,img:"https://images.unsplash.com/photo-1514996937319-344454492b37"}
+]
+
+const cart=[]
+
+let currency="USD"
+let rate=1
+
+function detectCurrency(){
+
+const lang=navigator.language
+
+if(lang.includes("GB")){
+currency="GBP"
+rate=0.78
+}
+
+document.getElementById("currency").innerText=currency
+}
+
+function renderProducts(){
+
+const container=document.getElementById("productsContainer")
+
+products.forEach(p=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<img src="${p.img}">
+
+<h3>${p.name}</h3>
+
+<p>Price: $${p.priceUSD}</p>
+
+<button class="btn" onclick="addToCart(${p.id})">Add To Cart</button>
+
+`
+
+container.appendChild(card)
+
+})
+
+}
+
+renderProducts()
+
+function addToCart(id){
+
+const product=products.find(p=>p.id===id)
+
+cart.push(product)
+
+renderCart()
+
+openCart()
+
+}
+
+function renderCart(){
+
+const list=document.getElementById("cartItems")
+
+list.innerHTML=""
+
+let total=0
+
+cart.forEach(p=>{
+
+const li=document.createElement("li")
+
+li.textContent=`${p.name} - ${(p.priceUSD*rate).toFixed(2)} ${currency}`
+
+list.appendChild(li)
+
+total+=p.priceUSD*rate
+
+})
+
+document.getElementById("totalPrice").innerText=total.toFixed(2)
+
+document.getElementById("totalOrders").innerText=cart.length
+
+document.getElementById("totalRevenue").innerText=total.toFixed(2)
+
+}
+
+function openCart(){
+document.getElementById("cartPanel").classList.add("open")
+}
+
+function toggleCart(){
+document.getElementById("cartPanel").classList.toggle("open")
+}
+
+function checkout(){
+
+if(cart.length===0){
+alert("Cart empty")
+return
+}
+
+alert("Simulated Stripe Checkout")
+
+cart.length=0
+
+renderCart()
+
+}
+
+/* PDF INVOICE */
+
+function downloadInvoice(){
+
+const {jsPDF}=window.jspdf
+
+const doc=new jsPDF()
+
+doc.text("Luméa Vela Invoice",20,20)
+
+let y=40
+
+let total=0
+
+cart.forEach(p=>{
+
+doc.text(`${p.name} ${(p.priceUSD*rate).toFixed(2)} ${currency}`,20,y)
+
+y+=10
+
+total+=p.priceUSD*rate
+
+})
+
+doc.text(`Total: ${total.toFixed(2)} ${currency}`,20,y+10)
+
+doc.save("invoice.pdf")
+
+}
+
+/* ADMIN LOGIN */
+
+function adminLogin(){
+
+const email=document.getElementById("adminEmail").value
+
+const pass=document.getElementById("adminPass").value
+
+if(email==="admin@lumeavela.com" && pass==="admin123"){
+
+document.getElementById("loginStatus").innerText="Admin Logged In"
+
+document.getElementById("adminPanel").style.display="block"
+
+}else{
+
+document.getElementById("loginStatus").innerText="Invalid Login"
+
+}
+
+}
+
+detectCurrency()
+
+</script>
+
+</body>
+</html>
