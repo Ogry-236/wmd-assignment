@@ -292,7 +292,7 @@ Our designs are inspired by bold individuals who value quality, style and authen
 
 <p>Total: $<span id="totalPrice">0</span></p>
 
-<p>Currency: <span id="currency">USD</span></p>
+<p>Currency: <span id="currency">BWP</span></p>
 
 <button onclick="checkout()">Checkout</button>
 
@@ -333,7 +333,7 @@ const products=[
 
 const cart=[]
 
-let currency="USD"
+let currency="bwp"
 let rate=1
 
 function detectCurrency(){
@@ -364,7 +364,7 @@ card.innerHTML=`
 
 <h3>${p.name}</h3>
 
-<p>Price: $${p.priceUSD}</p>
+<p>Price: $${p.priceBWO}</p>
 
 <button class="btn" onclick="addToCart(${p.id})">Add To Cart</button>
 
@@ -402,11 +402,11 @@ cart.forEach(p=>{
 
 const li=document.createElement("li")
 
-li.textContent=`${p.name} - ${(p.priceUSD*rate).toFixed(2)} ${currency}`
+li.textContent=`${p.name} - ${(p.priceBWP*rate).toFixed(2)} ${currency}`
 
 list.appendChild(li)
 
-total+=p.priceUSD*rate
+total+=p.priceBWP*rate
 
 })
 
@@ -433,7 +433,7 @@ alert("Cart empty")
 return
 }
 
-alert("Simulated Stripe Checkout")
+alert("Transaction Successful ✅ Thank you for shopping with us🥰 ")
 
 cart.length=0
 
@@ -457,11 +457,11 @@ let total=0
 
 cart.forEach(p=>{
 
-doc.text(`${p.name} ${(p.priceUSD*rate).toFixed(2)} ${currency}`,20,y)
+doc.text(`${p.name} ${(p.priceBWP*rate).toFixed(2)} ${currency}`,20,y)
 
 y+=10
 
-total+=p.priceUSD*rate
+total+=p.priceBWP*rate
 
 })
 
